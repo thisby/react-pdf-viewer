@@ -123,10 +123,13 @@ export const TextLayer: React.FC<{
         });
 
         return () => {
-            // Prevent the issue where the unit tests say that there are many text found in the React 18's Strict mode
             empty();
-            renderTaskRef.current?.cancel();
+            const task = renderTaskRef.current as any;
+            if (task && typeof task.cancel === 'function') {
+                task.cancel();
+            }
         };
+
     }, []);
 
     let transform = '';
